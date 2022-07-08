@@ -21,7 +21,8 @@ const UserDetails = () => {
       {myRewards &&
       myRewards.uid &&
       myRewards.uid.length &&
-      myRewards.hasOwnProperty("details") ? (
+      myRewards.hasOwnProperty("details") &&
+      myRewards.details !== null ? (
         <List>
           <ListItem>
             <ListItemText primary="UID" secondary={myRewards.uid} />

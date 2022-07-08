@@ -4,9 +4,10 @@
 }
 
 .nav-links {
-  font-family: Manrope-bold;
+  font-family: Manrope-semibold;
   text-decoration: none;
-  color: #fff;
+  color: #000;
+  text-decoration: none;
 }
 
 .nav-links-dd {
@@ -38,4 +39,21 @@
 
 .menu-icon:hover {
   cursor:pointer;
+}
+
+.minima-landscape {
+  width: 148px;
+}
+
+.iframe-website {
+  display: block;       /* iframes are inline by default */
+  background: #000;
+  border: none;         /* Reset default border */
+  height: 100vh;        /* Viewport-relative units */
+  width: 100vw;
+  position: relative;
+  right: 0;
+  top: 16px;
+  bottom: 0;
+  left: 0px;
 }

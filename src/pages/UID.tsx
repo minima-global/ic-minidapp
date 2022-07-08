@@ -22,7 +22,13 @@ const UID = () => {
         Example: (0XXXXXb-5XXc-4XX7-aXXc-70XX8XX7cXX1)
       </Typography>
       <UIDForm
-        set={myRewards && myRewards.hasOwnProperty("details") ? true : false}
+        set={
+          myRewards &&
+          myRewards.hasOwnProperty("details") &&
+          myRewards.details !== null
+            ? true
+            : false
+        }
         setRewardsContext={setMyRewards}
       />
     </Stack>
@@ -47,7 +53,11 @@ const UIDForm = ({ set, setRewardsContext }: any) => {
           console.log("UID", uid);
           console.log(res);
           if (res.status) {
-            if (!res.response.hasOwnProperty("details")) {
+            if (
+              !res.response.hasOwnProperty("details") ||
+              (res.response.hasOwnProperty("details") &&
+                res.response.details === null)
+            ) {
               console.error(
                 `You tried to register ${res.params.uid} and it failed, please use a valid uid`
               );

@@ -1,7 +1,15 @@
 import React from "react";
 import "./App.css";
 
-import { AppBar, Box, Grid, Stack, Toolbar, Typography } from "@mui/material";
+import {
+  AppBar,
+  Box,
+  Drawer,
+  Grid,
+  Stack,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import {
   Navigate,
   Route,
@@ -10,12 +18,12 @@ import {
   useLocation,
 } from "react-router-dom";
 
+import DrawerContent from "./components/DrawerContent";
 import UID from "./pages/UID";
 import UserDetails from "./pages/UserDetails";
 import { setIncentiveCash } from "./minima";
 
 import Logo from "./assets/logo.png";
-import { IncentiveCashUserRewards } from "./minima/types/minima";
 import Website from "./pages/Website";
 
 import MenuIcon from "@mui/icons-material/Menu";
@@ -25,10 +33,33 @@ export const RewardsContext = React.createContext<any>({
   uid: "",
 });
 
-const Header = () => {
+const Header = ({ setOpenDrawer }: any) => {
+  const location = useLocation();
   const [openMenu, setOpenMenu] = React.useState(false);
+  const routerDrawer = [
+    {
+      pathname: "/uid",
+      name: "Setting Up Your UID",
+    },
+    {
+      pathname: "/details",
+      name: "Your Rewards",
+    },
+    {
+      pathname: "/website",
+      name: "Website",
+    },
+  ];
+
+  const getPageName = (routes: any[]) => {
+    routes.forEach((r) => {
+      if (r.pathname === location.pathname) {
+        return r.name;
+      }
+    });
+  };
   return (
-    <AppBar elevation={0}>
+    <AppBar elevation={0} sx={appwidth}>
       <Toolbar>
         <Grid container>
           <Grid item xs={1} />
@@ -44,25 +75,11 @@ const Header = () => {
             }}
           >
             <Stack direction="row" alignItems="center">
-              <img className="logo" src={Logo} />
-              <Typography sx={{ ml: 1 }} variant="h6">
-                IncentiveCash
+              <Typography variant="body1">
+                {routerDrawer.map((r) => {
+                  return r.pathname === location.pathname ? r.name : null;
+                })}
               </Typography>
-            </Stack>
-            <Stack
-              direction="row"
-              spacing={3}
-              sx={{ display: { sm: "flex", xs: "none" } }}
-            >
-              <NavLink className="nav-links" to="uid">
-                UID
-              </NavLink>
-              <NavLink className="nav-links" to="details">
-                Rewards
-              </NavLink>
-              <NavLink className="nav-links" to="website">
-                Website
-              </NavLink>
             </Stack>
 
             {!openMenu ? (
@@ -70,19 +87,10 @@ const Header = () => {
                 sx={{ display: { xs: "flex", sm: "none" } }}
                 color="inherit"
                 className="menu-icon"
-                onClick={() => setOpenMenu(true)}
+                onClick={() => setOpenDrawer(true)}
               />
-            ) : (
-              <CloseIcon
-                sx={{ display: { xs: "flex", sm: "none" } }}
-                color="inherit"
-                className="menu-icon"
-                onClick={() => setOpenMenu(false)}
-              />
-            )}
+            ) : null}
           </Grid>
-
-          <Grid item xs={1} />
         </Grid>
       </Toolbar>
     </AppBar>
@@ -94,11 +102,17 @@ const Navigation = () => {
   const isFramed = location.pathname === "/website" ? true : false;
 
   return (
-    <Grid container>
-      <Grid item xs={isFramed ? 0 : 1} />
+    <Box component="main" sx={[{ mt: isFramed ? 0 : 2, mb: 2 }, appwidth]}>
+      <Grid container>
+        <Grid item xs={isFramed ? 0 : 1} />
 
-      <Grid item xs={isFramed ? 12 : 10} sm={isFramed ? 12 : 6}>
-        <Box component="main" sx={{ mt: isFramed ? 0 : 2, mb: 2 }}>
+        <Grid
+          item
+          xs={isFramed ? 12 : 9}
+          sm={isFramed ? 12 : 9}
+          sx={{ height: isFramed ? "100vh" : 0 }}
+          lg={isFramed ? 12 : 6}
+        >
           <Routes>
             <Route path="/" element={<Navigate replace to="/uid" />} />
             <Route path="/uid" element={<UID />} />
@@ -106,16 +120,19 @@ const Navigation = () => {
             <Route path="/website" element={<Website />} />
             <Route path="*" element={<Navigate replace to="/uid" />} />
           </Routes>
-        </Box>
+        </Grid>
+        <Grid item lg={isFramed ? 0 : 4} />
       </Grid>
-
-      <Grid item xs={isFramed ? 0 : 1} sm={isFramed ? 0 : 5} />
-    </Grid>
+    </Box>
   );
 };
 
 function App() {
   const [myRewards, setMyRewards] = React.useState({ uid: "" });
+  const [openDrawer, setOpenDrawer] = React.useState(false);
+  const handleDrawerClose = () => {
+    return openDrawer ? setOpenDrawer(false) : null;
+  };
   React.useEffect(() => {
     // set context if exist
     setIncentiveCash(null)
@@ -139,11 +156,39 @@ function App() {
   return (
     <RewardsContext.Provider value={[myRewards, setMyRewards]}>
       <div className="App">
-        <Header />
+        <Header
+          setOpenDrawer={setOpenDrawer}
+          handleDrawerClose={handleDrawerClose}
+        />
         <Navigation />
+        <Drawer
+          onClose={handleDrawerClose}
+          variant="temporary"
+          open={openDrawer}
+          sx={drawerdisplay}
+        >
+          <DrawerContent handleDrawerClose={handleDrawerClose} />
+        </Drawer>
+        <Drawer variant="permanent" sx={drawerdisplaydesktop}>
+          <DrawerContent />
+        </Drawer>
       </div>
     </RewardsContext.Provider>
   );
 }
 
 export default App;
+
+const DRAWERWIDTH = 240;
+const drawerdisplay = {
+  display: { xs: "block", sm: "none" },
+  "& .MuiDrawer-paper": { boxSizing: "border-box", width: DRAWERWIDTH },
+};
+const drawerdisplaydesktop = {
+  display: { xs: "none", sm: "block" },
+  "& .MuiDrawer-paper": { width: DRAWERWIDTH },
+};
+const appwidth = {
+  width: { sm: `calc(100% - ${DRAWERWIDTH}px)` },
+  ml: { sm: `${DRAWERWIDTH}px` },
+};
