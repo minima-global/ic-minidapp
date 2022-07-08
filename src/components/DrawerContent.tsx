@@ -26,7 +26,10 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
         <Toolbar sx={{ ml: 2 }}>
           <Stack direction="row" alignItems="center">
             <img className="logo" src={Logo} />
-            <Typography sx={{ ml: 1 }} variant="h6">
+            <Typography
+              sx={{ ml: 1, fontSize: { xs: "1.0rem", sm: "1.6rem" } }}
+              variant="h6"
+            >
               IncentiveCash
             </Typography>
           </Stack>
