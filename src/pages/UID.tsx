@@ -45,8 +45,18 @@ const validation = Yup.object().shape({
 
 const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
   const [formMessage, setFormMessage] = React.useState("");
+
+  React.useEffect(() => {
+    formik.setFieldValue(
+      "uid",
+      myRewards && myRewards.uid.length ? myRewards.uid : ""
+    );
+  }, [myRewards]);
+
   const formik = useFormik({
-    initialValues: { uid: "" },
+    initialValues: {
+      uid: "",
+    },
     onSubmit: ({ uid }: { uid: string }) => {
       if (formMessage.length) setFormMessage("");
 
@@ -90,9 +100,7 @@ const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
           disabled={formik.isSubmitting}
           id="uid"
           name="uid"
-          placeholder={
-            myRewards.uid && myRewards.uid.length ? myRewards.uid : "UID"
-          }
+          placeholder={"Incentive ID"}
           value={formik.values.uid}
           onChange={formik.handleChange}
           error={formik.touched.uid && Boolean(formik.errors.uid)}
