@@ -56,6 +56,10 @@ const UserDetails = () => {
             />
           </ListItem> */}
           <CustomListItem
+            title="Last Ping"
+            value={myRewards.details?.lastPing}
+          />
+          <CustomListItem
             title="Total Rewards"
             value={calculateTotalRewards([
               myRewards.details.rewards.communityRewards,
