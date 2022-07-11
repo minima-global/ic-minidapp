@@ -16,8 +16,8 @@ const UID = () => {
       <Typography variant="h6">Incentive ID</Typography>
       <Typography variant="body2">
         If you do not have your Incentive ID, please go to the{" "}
-        <Link href="https://incentive.minima.global">Incentive Website</Link>{" "}
-        website & copy it from the Incentive ID page.
+        <Link href="https://incentive.minima.global">Incentive Website</Link> &
+        copy it from the Incentive ID page.
       </Typography>
       <Typography variant="caption">
         Example: (0XXXXXb-5XXc-4XX7-aXXc-70XX8XX7cXX1)
