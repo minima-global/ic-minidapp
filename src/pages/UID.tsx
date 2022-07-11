@@ -87,7 +87,7 @@ const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
     <form onSubmit={formik.handleSubmit}>
       <Stack spacing={2}>
         <TextField
-          disabled={formik.isSubmitting || set}
+          disabled={formik.isSubmitting}
           id="uid"
           name="uid"
           placeholder={
@@ -112,9 +112,7 @@ const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
           }}
         />
         <Button
-          disabled={
-            (formik.isSubmitting && formik.dirty && formik.isValid) || set
-          }
+          disabled={formik.isSubmitting && formik.dirty && formik.isValid}
           type="submit"
           variant="contained"
           disableElevation
