@@ -20,7 +20,7 @@ const UserDetails = () => {
       myRewards.uid.length &&
       myRewards.hasOwnProperty("details") &&
       myRewards.details !== null ? (
-        <List>
+        <List sx={{ margin: "0!important" }}>
           {/* <ListItem>
             <Typography variant="body1">Name</Typography>
             <ListItemText
