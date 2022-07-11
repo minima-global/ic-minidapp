@@ -1,39 +1,42 @@
-import {
-  Chip,
-  List,
-  ListItem,
-  ListItemText,
-  Stack,
-  Typography,
-} from "@mui/material";
+import { List, Stack, Typography } from "@mui/material";
 import React from "react";
 
-import { copy } from "../shared";
 import { RewardsContext } from "../App";
+import CustomListItem from "../components/CustomListItem";
 
 const UserDetails = () => {
-  const [copyText, setCopyText] = React.useState("Copy");
   const [myRewards, setmyRewards] = React.useContext(RewardsContext);
   console.log("myRewards", myRewards);
+
+  const calculateTotalRewards = (rs: number[]) => {
+    return rs.reduce((x, y) => x + y);
+  };
   return (
-    <Stack>
-      <Typography variant="h6">Your Reward Details</Typography>
+    <Stack spacing={1}>
+      {/* <CustomListItem title="Total Daily Node Rewards" value={"Testing Component"} /> */}
+      <Typography variant="h6">Rewards</Typography>
       {myRewards &&
       myRewards.uid &&
       myRewards.uid.length &&
       myRewards.hasOwnProperty("details") &&
       myRewards.details !== null ? (
         <List>
-          <ListItem>
-            <ListItemText primary="UID" secondary={myRewards.uid} />
-          </ListItem>
-          <ListItem>
+          {/* <ListItem>
+            <Typography variant="body1">Name</Typography>
             <ListItemText
-              primary="Last Ping"
-              secondary={myRewards.details?.lastPing}
+              disableTypography
+              secondary={
+                <Typography
+                  variant="subtitle1"
+                  // className={styles["text-field"]}
+                >
+                  {myRewards.details?.lastPing}
+                </Typography>
+              }
+              // secondary={myRewards.details?.lastPing}
             />
-          </ListItem>
-          <ListItem>
+          </ListItem> */}
+          {/* <ListItem>
             <ListItemText
               primary="Invite Code"
               secondary={myRewards.details?.inviteCode}
@@ -51,31 +54,39 @@ const UserDetails = () => {
               }}
               label={copyText}
             />
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              primary="Community Rewards"
-              secondary={myRewards.details?.rewards?.communityRewards}
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              primary="Daily Rewards"
-              secondary={myRewards.details?.rewards?.dailyRewards}
-            />
-          </ListItem>
-          <ListItem>
-            <ListItemText
-              primary="Inviter Rewards"
-              secondary={myRewards.details?.rewards?.inviterRewards}
-            />
-          </ListItem>
-          <ListItem>
+          </ListItem> */}
+          <CustomListItem
+            title="Total Rewards"
+            value={calculateTotalRewards([
+              myRewards.details.rewards.communityRewards,
+              myRewards.details.rewards.dailyRewards,
+              myRewards.details.rewards.inviterRewards,
+              myRewards.details.rewards.previousRewards,
+            ])}
+          />
+          <Typography variant="h5">Breakdown Of Rewards</Typography>
+          <CustomListItem
+            title="Total Daily Node Rewards"
+            value={myRewards.details?.rewards?.dailyRewards}
+          />
+          <CustomListItem
+            title="Total Invite Rewards"
+            value={myRewards.details?.rewards?.inviterRewards}
+          />
+          <CustomListItem
+            title="Total Additional Rewards"
+            value={calculateTotalRewards([
+              myRewards.details?.rewards?.communityRewards,
+              myRewards.details?.rewards?.previousRewards,
+            ])}
+          />
+
+          {/* <ListItem>
             <ListItemText
               primary="Previous Rewards"
               secondary={myRewards.details?.rewards?.previousRewards}
             />
-          </ListItem>
+          </ListItem> */}
         </List>
       ) : (
         <Typography variant="body2">Not registered yet</Typography>

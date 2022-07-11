@@ -10,24 +10,16 @@ import {
   Toolbar,
   Typography,
 } from "@mui/material";
-import {
-  Navigate,
-  Route,
-  Routes,
-  NavLink,
-  useLocation,
-} from "react-router-dom";
+import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 
 import DrawerContent from "./components/DrawerContent";
 import UID from "./pages/UID";
+import Help from "./pages/Help";
+import InviteLink from "./pages/InviteLink";
 import UserDetails from "./pages/UserDetails";
 import { setIncentiveCash } from "./minima";
 
-import Logo from "./assets/logo.png";
-import Website from "./pages/Website";
-
 import MenuIcon from "@mui/icons-material/Menu";
-import CloseIcon from "@mui/icons-material/Close";
 
 export const RewardsContext = React.createContext<any>({
   uid: "",
@@ -38,12 +30,20 @@ const Header = ({ setOpenDrawer }: any) => {
   const [openMenu, setOpenMenu] = React.useState(false);
   const routerDrawer = [
     {
+      pathname: "/about",
+      name: "About",
+    },
+    {
       pathname: "/uid",
-      name: "Setting Up Your UID",
+      name: "",
     },
     {
       pathname: "/details",
-      name: "Your Rewards",
+      name: "",
+    },
+    {
+      pathname: "/invitelink",
+      name: "",
     },
     {
       pathname: "/website",
@@ -51,13 +51,6 @@ const Header = ({ setOpenDrawer }: any) => {
     },
   ];
 
-  const getPageName = (routes: any[]) => {
-    routes.forEach((r) => {
-      if (r.pathname === location.pathname) {
-        return r.name;
-      }
-    });
-  };
   return (
     <AppBar elevation={0} sx={appwidth}>
       <Toolbar>
@@ -98,30 +91,22 @@ const Header = ({ setOpenDrawer }: any) => {
 };
 
 const Navigation = () => {
-  const location = useLocation();
-  const isFramed = location.pathname === "/website" ? true : false;
-
   return (
-    <Box component="main" sx={[{ mt: isFramed ? 0 : 2, mb: 2 }, appwidth]}>
+    <Box component="main" sx={[{ mt: 2, mb: 2 }, appwidth]}>
       <Grid container>
-        <Grid item xs={isFramed ? 0 : 1} />
+        <Grid item xs={1} />
 
-        <Grid
-          item
-          xs={isFramed ? 12 : 9}
-          sm={isFramed ? 12 : 9}
-          sx={{ height: isFramed ? "100vh" : 0 }}
-          lg={isFramed ? 12 : 6}
-        >
+        <Grid item xs={10} sm={9} lg={6}>
           <Routes>
             <Route path="/" element={<Navigate replace to="/uid" />} />
             <Route path="/uid" element={<UID />} />
             <Route path="/details" element={<UserDetails />} />
-            <Route path="/website" element={<Website />} />
+            <Route path="/help" element={<Help />} />
+            <Route path="/invitelink" element={<InviteLink />} />
             <Route path="*" element={<Navigate replace to="/uid" />} />
           </Routes>
         </Grid>
-        <Grid item lg={isFramed ? 0 : 4} />
+        <Grid item lg={2} xs={0} />
       </Grid>
     </Box>
   );

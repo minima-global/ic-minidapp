@@ -5,17 +5,21 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
+  Link,
   Stack,
   Toolbar,
   Typography,
+  Divider,
 } from "@mui/material";
 
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 import Logo from "../assets/logo.png";
+import InfoIcon from "@mui/icons-material/Info";
 import StarsIcon from "@mui/icons-material/Stars";
-import LanguageIcon from "@mui/icons-material/Language";
+import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
 
 import { ReactComponent as LandscapeLogo } from "../assets/minima-landscape-logo.svg";
 
@@ -27,10 +31,10 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
           <Stack direction="row" alignItems="center">
             <img className="logo" src={Logo} />
             <Typography
-              sx={{ ml: 1, fontSize: { xs: "1.0rem", sm: "1.6rem" } }}
+              sx={{ ml: 1, fontSize: { xs: "1.0rem", sm: "1.2rem" } }}
               variant="h6"
             >
-              IncentiveCash
+              Incentive Program
             </Typography>
           </Stack>
         </Toolbar>
@@ -47,7 +51,7 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
                 <AppRegistrationIcon color="primary" />
               </ListItemIcon>
               <NavLink className="nav-links" to="/uid">
-                Register Node
+                Incentive ID
               </NavLink>
             </ListItemButton>
           </NavLink>
@@ -68,27 +72,45 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
           <NavLink
             onClick={handleDrawerClose}
             className="nav-links"
-            to="/website"
+            to="/invitelink"
           >
             <ListItemButton>
               <ListItemIcon>
-                <LanguageIcon color="primary" />
+                <ConnectWithoutContactIcon color="primary" />
               </ListItemIcon>
-              <NavLink className="nav-links" to="/website">
-                Website
+              <NavLink className="nav-links" to="/invitelink">
+                Invite Link
               </NavLink>
             </ListItemButton>
           </NavLink>
+          <NavLink onClick={handleDrawerClose} className="nav-links" to="/help">
+            <ListItemButton>
+              <ListItemIcon>
+                <InfoIcon color="primary" />
+              </ListItemIcon>
+              <NavLink className="nav-links" to="/help">
+                Help
+              </NavLink>
+            </ListItemButton>
+          </NavLink>
+
+          <Divider />
+          <Link
+            onClick={handleDrawerClose}
+            className="nav-links-website"
+            target="_"
+            href="https://incentive.minima.global"
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <ExitToAppIcon color="primary" />
+              </ListItemIcon>
+              Incentive Website
+            </ListItemButton>
+          </Link>
         </List>
 
         <Stack sx={{ padding: "8px 16px" }} direction="row">
-          <Typography
-            color="inherit"
-            variant="caption"
-            sx={{ letterSpacing: 1, fontSize: "10px" }}
-          >
-            Powered by
-          </Typography>
           <LandscapeLogo className="minima-landscape" />
         </Stack>
       </Stack>

@@ -33,4 +33,5 @@ const styling = {
   overflow: "hidden",
   display: "block",
   border: "none",
+  marginTop: "0!important",
 };

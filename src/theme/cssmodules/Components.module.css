@@ -1,0 +1,33 @@
+.text-field {
+  padding: 8px;
+  border-radius: 8px;
+  font-weight: 400;
+  background-color: #fff;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  color: #767682;
+}
+
+.text-field-wrapper {
+  width: 100%;
+}
+
+.list-item {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start!important;
+}
+
+.list-item-title {
+  color: #767682;
+  font-size: 0.925rem;
+  font-weight: 500;
+  padding-left: 20px;
+}
+
+.help-links-icon {
+  color: #767682;
+  font-size: 1.0rem;
+  margin-right: 8px;
+}

@@ -1,4 +1,5 @@
 import { createTheme } from '@mui/material/styles';
+import uiBackground from '../assets/LM.jpeg';
 
 let theme = createTheme({
     palette: {
@@ -43,7 +44,8 @@ let theme = createTheme({
             lineHeight: 1,
         },
         caption: {
-            fontFamily: 'Manrope-semibold'
+            fontFamily: 'Manrope-semibold',
+            color: '#767682'
         },
         subtitle1: {
             fontSize: "0.9rem",
@@ -52,8 +54,9 @@ let theme = createTheme({
         },
         body2: {
             fontSize: "0.9rem",
-            fontFamily: "Manrope-semibold",
-            color: '#363A3F!important'
+            fontFamily: "Manrope-bold",
+            color: '#767682',
+            fontWeight: 600
         },
         h6: {
             fontWeight: 600,
@@ -68,7 +71,12 @@ let theme = createTheme({
 
     components: {
         MuiCssBaseline: {
-           
+            styleOverrides: `
+            body {
+                background-image: url(${uiBackground})!important;
+                background-size: cover;
+            }
+          `,
             
         },
     },

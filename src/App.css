@@ -9,7 +9,10 @@
   color: #000;
   text-decoration: none;
 }
-
+.nav-links-website {
+  color: #000!important;
+  text-decoration: none!important;
+}
 .nav-links-dd {
   font-family: Manrope-bold;
   text-decoration: none;
@@ -56,4 +59,9 @@
   top: 16px;
   bottom: 0;
   left: 0px;
+  margin-top: 0!important;
+}
+
+.error {
+  color: red;
 }

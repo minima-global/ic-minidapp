@@ -1,6 +1,6 @@
 import React from "react";
-import { Button, Stack, TextField, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Button, Link, Stack, TextField, Typography } from "@mui/material";
+import { Link as LinkRouter } from "react-router-dom";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
@@ -13,10 +13,11 @@ const UID = () => {
   console.log("UID myrewards context", myRewards);
   return (
     <Stack spacing={1}>
-      <Typography variant="h6">Setting up your UID</Typography>
+      <Typography variant="h6">Incentive ID</Typography>
       <Typography variant="body2">
-        If you do not have your UID, please login to the{" "}
-        <Link to="/website">Incentive's</Link> website to obtain it.
+        If you do not have your Incentive ID, please go to the{" "}
+        <Link href="https://incentive.minima.global">Incentive Website</Link>{" "}
+        website & copy it from the Incentive ID page.
       </Typography>
       <Typography variant="caption">
         Example: (0XXXXXb-5XXc-4XX7-aXXc-70XX8XX7cXX1)
@@ -30,6 +31,7 @@ const UID = () => {
             : false
         }
         setRewardsContext={setMyRewards}
+        myRewards={myRewards}
       />
     </Stack>
   );
@@ -41,7 +43,7 @@ const validation = Yup.object().shape({
   uid: Yup.string().required("Field Required"),
 });
 
-const UIDForm = ({ set, setRewardsContext }: any) => {
+const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
   const [formMessage, setFormMessage] = React.useState("");
   const formik = useFormik({
     initialValues: { uid: "" },
@@ -59,10 +61,10 @@ const UIDForm = ({ set, setRewardsContext }: any) => {
                 res.response.details === null)
             ) {
               console.error(
-                `You tried to register ${res.params.uid} and it failed, please use a valid uid`
+                `You tried to register ${res.params.uid} and it failed, please use a valid uid!`
               );
               setFormMessage(
-                `You tried to register uid:${res.params.uid} and it failed, please use a valid uid.`
+                `You have entered an invalid Incentive ID, please go to the Incentive Website & copy it from the Incentive ID page.`
               );
             } else {
               console.log("Setting new rewards context...");
@@ -88,7 +90,9 @@ const UIDForm = ({ set, setRewardsContext }: any) => {
           disabled={formik.isSubmitting || set}
           id="uid"
           name="uid"
-          placeholder="UID"
+          placeholder={
+            myRewards.uid && myRewards.uid.length ? myRewards.uid : "UID"
+          }
           value={formik.values.uid}
           onChange={formik.handleChange}
           error={formik.touched.uid && Boolean(formik.errors.uid)}
@@ -115,20 +119,29 @@ const UIDForm = ({ set, setRewardsContext }: any) => {
           variant="contained"
           disableElevation
         >
-          Set
+          Enter
         </Button>
         {formMessage.length ? (
-          <Typography variant="caption">{formMessage}</Typography>
+          <Typography
+            variant="caption"
+            className={
+              formMessage === "You have successfully registered your node."
+                ? ""
+                : "error"
+            }
+          >
+            {formMessage}
+          </Typography>
         ) : null}
         {formMessage.length &&
         formMessage === "You have successfully registered your node." ? (
-          <Link className="rewards-link" to="/details">
-            Go to my incentive rewards
-          </Link>
+          <LinkRouter className="rewards-link" to="/details">
+            Go to my Incentive Rewards.
+          </LinkRouter>
         ) : set ? (
-          <Link className="rewards-link" to="/details">
-            Go to my incentive rewards
-          </Link>
+          <LinkRouter className="rewards-link" to="/details">
+            Go to my Incentive Rewards.
+          </LinkRouter>
         ) : null}
       </Stack>
     </form>
