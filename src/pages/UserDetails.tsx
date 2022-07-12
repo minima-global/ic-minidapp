@@ -6,7 +6,7 @@ import CustomListItem from "../components/CustomListItem";
 
 const UserDetails = () => {
   const [myRewards, setmyRewards] = React.useContext(RewardsContext);
-  console.log("myRewards", myRewards);
+  // console.log("myRewards", myRewards);
 
   const calculateTotalRewards = (rs: number[]) => {
     return rs.reduce((x, y) => x + y);

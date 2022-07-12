@@ -79,7 +79,7 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
                 <ConnectWithoutContactIcon color="primary" />
               </ListItemIcon>
               <NavLink className="nav-links" to="/invitelink">
-                Invite Link
+                Invite Code
               </NavLink>
             </ListItemButton>
           </NavLink>

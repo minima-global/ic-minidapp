@@ -10,7 +10,7 @@ import { setIncentiveCash } from "../minima";
 
 const UID = () => {
   const [myRewards, setMyRewards] = React.useContext(RewardsContext);
-  console.log("UID myrewards context", myRewards);
+  // console.log("UID myrewards context", myRewards);
   return (
     <Stack spacing={1}>
       <Typography variant="h6">Incentive ID</Typography>
@@ -62,8 +62,8 @@ const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
 
       setIncentiveCash(uid)
         .then((res: any) => {
-          console.log("UID", uid);
-          console.log(res);
+          // console.log("UID", uid);
+          // console.log(res);
           if (res.status) {
             if (
               !res.response.hasOwnProperty("details") ||
@@ -76,18 +76,25 @@ const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
               setFormMessage(
                 `You have entered an invalid Incentive ID, please go to the Incentive Website & copy it from the Incentive ID page.`
               );
+
+              setTimeout(() => formik.resetForm(), 2000);
             } else {
-              console.log("Setting new rewards context...");
+              // console.log("Setting new rewards context...");
               setRewardsContext(res.response);
               setFormMessage(`You have successfully registered your node.`);
+
+              setTimeout(() => formik.resetForm(), 2000);
+
+              setTimeout(() => {
+                formik.setFieldValue("uid", uid);
+              }, 2100);
             }
           }
         })
         .catch((err) => {
           console.error(err);
+          setTimeout(() => formik.resetForm(), 2000);
         });
-
-      setTimeout(() => formik.resetForm(), 2000);
     },
     validateOnChange: true,
     validationSchema: validation,

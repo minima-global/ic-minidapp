@@ -10,10 +10,14 @@ const InviteLink = () => {
   const [myRewards, setMyRewards] = React.useContext(RewardsContext);
   return (
     <Stack spacing={1}>
-      <Typography variant="h6">Invite Link</Typography>
+      <Typography variant="h6">Invite Code</Typography>
       <Typography variant="body2">
-        Your Invite Link enables you to earn additional Rewards for inviting
+        Your Invite Code enables you to earn additional Rewards for inviting
         others to run a node and join the Incentive Program.
+      </Typography>
+      <Typography variant="body2">
+        Invite codes can only be entered during initial registration of the
+        incentive program.
       </Typography>
       <Typography variant="caption">
         Once the Minima network reaches one million nodes, Invite Codes will no
