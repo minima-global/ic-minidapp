@@ -4,6 +4,8 @@ import React from "react";
 import { RewardsContext } from "../App";
 import CustomListItem from "../components/CustomListItem";
 
+import moment from "moment";
+
 const UserDetails = () => {
   const [myRewards, setmyRewards] = React.useContext(RewardsContext);
   // console.log("myRewards", myRewards);
@@ -12,7 +14,7 @@ const UserDetails = () => {
     return rs.reduce((x, y) => x + y);
   };
   return (
-    <Stack spacing={1}>
+    <Stack spacing={2}>
       {/* <CustomListItem title="Total Daily Node Rewards" value={"Testing Component"} /> */}
       <Typography variant="h6">Rewards</Typography>
       {myRewards &&
@@ -21,44 +23,6 @@ const UserDetails = () => {
       myRewards.hasOwnProperty("details") &&
       myRewards.details !== null ? (
         <List sx={{ margin: "0!important" }}>
-          {/* <ListItem>
-            <Typography variant="body1">Name</Typography>
-            <ListItemText
-              disableTypography
-              secondary={
-                <Typography
-                  variant="subtitle1"
-                  // className={styles["text-field"]}
-                >
-                  {myRewards.details?.lastPing}
-                </Typography>
-              }
-              // secondary={myRewards.details?.lastPing}
-            />
-          </ListItem> */}
-          {/* <ListItem>
-            <ListItemText
-              primary="Invite Code"
-              secondary={myRewards.details?.inviteCode}
-            />
-            <Chip
-              onClick={() => {
-                copy(
-                  myRewards.details?.inviteCode
-                    ? myRewards.details.inviteCode
-                    : ""
-                );
-
-                setCopyText("Copied");
-                setTimeout(() => setCopyText("Copy"), 2000);
-              }}
-              label={copyText}
-            />
-          </ListItem> */}
-          <CustomListItem
-            title="Last Ping"
-            value={myRewards.details?.lastPing}
-          />
           <CustomListItem
             title="Total Rewards"
             value={calculateTotalRewards([
@@ -84,16 +48,18 @@ const UserDetails = () => {
               myRewards.details?.rewards?.previousRewards,
             ])}
           />
-
-          {/* <ListItem>
-            <ListItemText
-              primary="Previous Rewards"
-              secondary={myRewards.details?.rewards?.previousRewards}
-            />
-          </ListItem> */}
+          <Typography variant="h5">Last Ping</Typography>
+          <CustomListItem
+            title=""
+            value={moment(myRewards.details?.lastPing).format(
+              "MMMM Do YYYY - hh:mm:ss a"
+            )}
+          />
         </List>
       ) : (
-        <Typography variant="body2">Not registered yet</Typography>
+        <Typography variant="body2">
+          Please connect your Incentive ID to view your Rewards.
+        </Typography>
       )}
     </Stack>
   );

@@ -12,7 +12,7 @@ const UID = () => {
   const [myRewards, setMyRewards] = React.useContext(RewardsContext);
   // console.log("UID myrewards context", myRewards);
   return (
-    <Stack spacing={1}>
+    <Stack spacing={2}>
       <Typography variant="h6">Incentive ID</Typography>
       <Typography variant="body2">
         If you do not have your Incentive ID, please go to the{" "}
@@ -132,7 +132,7 @@ const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
           variant="contained"
           disableElevation
         >
-          Enter
+          {formik.values.uid.length ? "Update" : "Enter"}
         </Button>
         {formMessage.length ? (
           <Typography

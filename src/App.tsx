@@ -53,7 +53,7 @@ const Header = ({ setOpenDrawer }: any) => {
 
   return (
     <AppBar elevation={0} sx={appwidth}>
-      <Toolbar>
+      <Toolbar variant="dense">
         <Grid container>
           <Grid item xs={1} />
 
@@ -122,7 +122,7 @@ function App() {
     // set context if exist
     setIncentiveCash(null)
       .then((res: any) => {
-        console.log(res);
+        // console.log(res);
         if (res.status) {
           if (
             res.response.uid &&

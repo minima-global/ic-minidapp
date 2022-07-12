@@ -56,7 +56,8 @@ let theme = createTheme({
             fontSize: "0.9rem",
             fontFamily: "Manrope-bold",
             color: '#767682',
-            fontWeight: 600
+            fontWeight: 600,
+            lineHeight: '1.5rem'
         },
         h6: {
             fontWeight: 600,
@@ -202,7 +203,6 @@ theme = createTheme(theme, {
                     borderBottom: 'none',
                     color: '#fff',
                     padding: '0!important'
-
                 }
             }
         },

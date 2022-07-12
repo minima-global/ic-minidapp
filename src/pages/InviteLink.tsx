@@ -9,17 +9,17 @@ const InviteLink = () => {
   const [copyText, setCopyText] = React.useState("Copy");
   const [myRewards, setMyRewards] = React.useContext(RewardsContext);
   return (
-    <Stack spacing={1}>
-      <Typography variant="h6">Invite Code</Typography>
+    <Stack spacing={2}>
+      <Typography variant="h6">Invite Link</Typography>
       <Typography variant="body2">
-        Your Invite Code enables you to earn additional Rewards for inviting
+        Your Invite Link enables you to earn additional Rewards for inviting
         others to run a node and join the Incentive Program.
       </Typography>
       <Typography variant="body2">
-        Invite codes can only be entered during initial registration of the
-        incentive program.
+        Simply share your Invite Link with a friend & your Invite Code will be
+        included when they register.
       </Typography>
-      <Typography variant="caption">
+      <Typography variant="body2">
         Once the Minima network reaches one million nodes, Invite Codes will no
         longer be active.
       </Typography>
@@ -27,7 +27,7 @@ const InviteLink = () => {
         title="Invite Link"
         value={
           myRewards.details?.inviteCode
-            ? myRewards.details?.inviteCode
+            ? `https://incentive.minima.global/account/register?inviteCode=${myRewards.details?.inviteCode}`
             : "Unavailable"
         }
       />
@@ -41,7 +41,9 @@ const InviteLink = () => {
         }
         onClick={() => {
           setCopyText("Copied");
-          copy(myRewards.details?.inviteCode);
+          copy(
+            `https://incentive.minima.global/account/register?inviteCode=${myRewards.details?.inviteCode}`
+          );
           setTimeout(() => setCopyText("Copy"), 2500);
         }}
         variant="contained"

@@ -5,7 +5,7 @@ import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 
 const Help = () => {
   return (
-    <Stack spacing={1}>
+    <Stack spacing={2}>
       <Typography variant="h6">Useful Links</Typography>
       <Link href="https://docs.minima.global/docs/minimaincentiveprogram">
         <ArrowForwardIosIcon className={styles["help-links-icon"]} />

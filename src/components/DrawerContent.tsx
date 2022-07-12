@@ -27,7 +27,7 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
   return (
     <>
       <AppBar elevation={0}>
-        <Toolbar sx={{ ml: 2 }}>
+        <Toolbar variant="dense" sx={{ ml: 2 }}>
           <Stack direction="row" alignItems="center">
             <img className="logo" src={Logo} />
             <Typography
@@ -50,9 +50,12 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
               <ListItemIcon>
                 <AppRegistrationIcon color="primary" />
               </ListItemIcon>
-              <NavLink className="nav-links" to="/uid">
+              <Typography
+                variant="body1"
+                sx={{ fontFamily: "Manrope-semibold" }}
+              >
                 Incentive ID
-              </NavLink>
+              </Typography>
             </ListItemButton>
           </NavLink>
           <NavLink
@@ -64,9 +67,12 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
               <ListItemIcon>
                 <StarsIcon color="primary" />
               </ListItemIcon>
-              <NavLink className="nav-links" to="/details">
+              <Typography
+                variant="body1"
+                sx={{ fontFamily: "Manrope-semibold" }}
+              >
                 Rewards
-              </NavLink>
+              </Typography>
             </ListItemButton>
           </NavLink>
           <NavLink
@@ -78,9 +84,12 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
               <ListItemIcon>
                 <ConnectWithoutContactIcon color="primary" />
               </ListItemIcon>
-              <NavLink className="nav-links" to="/invitelink">
-                Invite Code
-              </NavLink>
+              <Typography
+                variant="body1"
+                sx={{ fontFamily: "Manrope-semibold" }}
+              >
+                Invite Link
+              </Typography>
             </ListItemButton>
           </NavLink>
           <NavLink onClick={handleDrawerClose} className="nav-links" to="/help">
@@ -88,9 +97,12 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
               <ListItemIcon>
                 <InfoIcon color="primary" />
               </ListItemIcon>
-              <NavLink className="nav-links" to="/help">
+              <Typography
+                variant="body1"
+                sx={{ fontFamily: "Manrope-semibold" }}
+              >
                 Help
-              </NavLink>
+              </Typography>
             </ListItemButton>
           </NavLink>
 
@@ -105,12 +117,17 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
               <ListItemIcon>
                 <ExitToAppIcon color="primary" />
               </ListItemIcon>
-              Incentive Website
+              <Typography
+                variant="body1"
+                sx={{ fontFamily: "Manrope-semibold" }}
+              >
+                Incentive Website
+              </Typography>
             </ListItemButton>
           </Link>
         </List>
 
-        <Stack sx={{ padding: "8px 16px" }} direction="row">
+        <Stack sx={{ padding: "16px 16px" }} direction="row">
           <LandscapeLogo className="minima-landscape" />
         </Stack>
       </Stack>
