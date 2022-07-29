@@ -1,5 +1,5 @@
-const setIncentiveCash = (uid: string | null) => {
-    return req(`incentivecash ${uid && uid.length ? `"uid:"${uid}` : null}`);
+const setIncentiveCash = (uid: string) => {
+    return req(`incentivecash ${typeof uid === 'string' && uid.length > 0 ? `"uid:"${uid}` : ''}`);
 }
 
 const req = (command: string) => {   

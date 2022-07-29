@@ -120,7 +120,7 @@ function App() {
   };
   React.useEffect(() => {
     // set context if exist
-    setIncentiveCash(null)
+    setIncentiveCash("")
       .then((res: any) => {
         // console.log(res);
         if (res.status) {
