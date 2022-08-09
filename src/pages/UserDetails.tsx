@@ -35,7 +35,10 @@ const UserDetails = () => {
           <Typography variant="h5">Breakdown Of Rewards</Typography>
           <CustomListItem
             title="Total Daily Node Rewards"
-            value={myRewards.details?.rewards?.dailyRewards}
+            value={calculateTotalRewards([
+              myRewards.details?.rewards?.dailyRewards,
+              myRewards.details?.rewards?.previousRewards,
+            ])}
           />
           <CustomListItem
             title="Total Invite Rewards"
@@ -43,10 +46,7 @@ const UserDetails = () => {
           />
           <CustomListItem
             title="Total Additional Rewards"
-            value={calculateTotalRewards([
-              myRewards.details?.rewards?.communityRewards,
-              myRewards.details?.rewards?.previousRewards,
-            ])}
+            value={myRewards.details?.rewards?.communityRewards}
           />
           <Typography variant="h5">Last Ping</Typography>
           <CustomListItem

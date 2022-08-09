@@ -1,6 +1,6 @@
 {
   "name": "incentivecash",
-  "version": "1.4",
+  "version": "1.5",
   "private": true,
   "homepage": ".",
   "dependencies": {
@@ -29,7 +29,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build-zip": "npm run build && rm ic_* && cd build && zip -r ic_${version}.mds.zip . && mv ic_${version}.mds.zip ../",
+    "build-zip": "npm run build && rm minidapp/ic_* && cd build && zip -r ic_$npm_package_version.mds.zip . && mv minidapp/ic_$npm_package_version.mds.zip ../",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
