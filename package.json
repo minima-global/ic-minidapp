@@ -29,7 +29,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "build-zip": "npm run build && rm minidapp/ic_* && cd build && zip -r ic_$npm_package_version.mds.zip . && mv minidapp/ic_$npm_package_version.mds.zip ../",
+    "build-zip": "npm run build && rm minidapp/ic_* && cd build && zip -r ic_$npm_package_version.mds.zip . && mv ic_$npm_package_version.mds.zip ../minidapp",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
