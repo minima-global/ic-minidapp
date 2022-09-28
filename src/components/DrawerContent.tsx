@@ -19,6 +19,7 @@ import InfoIcon from "@mui/icons-material/Info";
 import StarsIcon from "@mui/icons-material/Stars";
 import ExitToAppIcon from "@mui/icons-material/ExitToApp";
 import AppRegistrationIcon from "@mui/icons-material/AppRegistration";
+import AccountBalanceWalletIcon from "@mui/icons-material/AccountBalanceWallet";
 import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact";
 
 import { ReactComponent as LandscapeLogo } from "../assets/minima-landscape-logo.svg";
@@ -92,6 +93,24 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
               </Typography>
             </ListItemButton>
           </NavLink>
+          <NavLink
+            onClick={handleDrawerClose}
+            className="nav-links"
+            to="/submitaddress"
+          >
+            <ListItemButton>
+              <ListItemIcon>
+                <AccountBalanceWalletIcon color="primary" />
+              </ListItemIcon>
+              <Typography
+                variant="body1"
+                sx={{ fontFamily: "Manrope-semibold" }}
+              >
+                Wallet
+              </Typography>
+            </ListItemButton>
+          </NavLink>
+
           <NavLink onClick={handleDrawerClose} className="nav-links" to="/help">
             <ListItemButton>
               <ListItemIcon>

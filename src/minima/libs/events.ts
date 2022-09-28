@@ -78,9 +78,9 @@ let whenMinimaLog = (d: MinimaLogData) => {
 
 const initializeMinima = () => {
 
-  // MDS.DEBUG_HOST = "127.0.0.1";
-  // MDS.DEBUG_PORT = 9003;
-  // MDS.DEBUG_MINIDAPPID = '0x4832EC3EB1DDAB4AFD62063F102CD8C2231AC0B2F89038EA96CE03FC99BD6208'
+  MDS.DEBUG_HOST = "127.0.0.1";
+  MDS.DEBUG_PORT = 9003;
+  MDS.DEBUG_MINIDAPPID = '0x28186BD17453F8A08584041F8B7B5414BB64AB234B204E5254AF3E757855CBEE'
 
   MDS.init((nodeEvent: InitResponse | MiningResponse | NewBlockResponse | MinimaLogResponse | NewBalanceResponse | MaximaResponse) => {
 

@@ -20,6 +20,7 @@ import UserDetails from "./pages/UserDetails";
 import { setIncentiveCash } from "./minima";
 
 import MenuIcon from "@mui/icons-material/Menu";
+import SubmitAddress from "./pages/SubmitAddress";
 
 export const RewardsContext = React.createContext<any>({
   uid: "",
@@ -43,6 +44,10 @@ const Header = ({ setOpenDrawer }: any) => {
     },
     {
       pathname: "/invitelink",
+      name: "",
+    },
+    {
+      pathname: "/submitaddress",
       name: "",
     },
     {
@@ -103,6 +108,7 @@ const Navigation = () => {
             <Route path="/details" element={<UserDetails />} />
             <Route path="/help" element={<Help />} />
             <Route path="/invitelink" element={<InviteLink />} />
+            <Route path="/submitaddress" element={<SubmitAddress />} />
             <Route path="*" element={<Navigate replace to="/uid" />} />
           </Routes>
         </Grid>
