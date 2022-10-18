@@ -1,4 +1,6 @@
-import { Txpow } from "../types/minima";
+
+import { Txpow } from '../types/minima';
+
 
 ////////////// response interfaces //////////
 interface InitResponse {
@@ -18,6 +20,13 @@ interface NewBlockResponse {
   event: 'NEWBLOCK';
   data: NewBlockData;
 }
+
+
+interface MDSTimerResponse {
+  event: 'MDS_TIMER_10SECONDS';
+  data: Object;
+}
+
 interface NewBlockData {
   txpow: Txpow;
 }
@@ -36,6 +45,11 @@ interface NewBalanceResponse {
 }
 interface NewBalanceData {
   // TODO
+}
+
+interface MaximaHosts {
+  event: "MAXIMAHOSTS";
+  data: any;
 }
 
 interface MaximaResponse {
@@ -68,7 +82,7 @@ let whenNewBalance = (d: NewBalanceData) => {
   // console.log("NEW BALANCE event ... please resgister custom callback", d);
 };
 let whenInit = () => {
-  // console.log("INIT event ... please resgister custom callback");
+  console.log("INIT event ... please resgister custom callback");
 };
 let whenMinimaLog = (d: MinimaLogData) => {
   // console.log("MINIMA LOG event ... please resgister custom callback", d);
@@ -77,15 +91,18 @@ let whenMinimaLog = (d: MinimaLogData) => {
 ///////////////////////////
 
 const initializeMinima = () => {
+  if (process.env.NODE_ENV == 'development') {
+    console.log(process.env.REACTAPP_MINIDAPPID)
+    MDS.DEBUG_HOST = "127.0.0.1";
+    MDS.DEBUG_PORT = 9003;
+    MDS.DEBUG_MINIDAPPID = process.env.REACT_APP_MINIDAPPID;
+  }
 
-  MDS.DEBUG_HOST = "127.0.0.1";
-  MDS.DEBUG_PORT = 9003;
-  MDS.DEBUG_MINIDAPPID = '0x28186BD17453F8A08584041F8B7B5414BB64AB234B204E5254AF3E757855CBEE'
-
-  MDS.init((nodeEvent: InitResponse | MiningResponse | NewBlockResponse | MinimaLogResponse | NewBalanceResponse | MaximaResponse) => {
+  MDS.init((nodeEvent: InitResponse | MiningResponse | NewBlockResponse | MinimaLogResponse | NewBalanceResponse | MaximaResponse | MDSTimerResponse | MaximaHosts) => {
 
       switch (nodeEvent.event) {
           case 'inited':
+              // will have to dispatch from here..
               whenInit()
               break;
           case 'NEWBLOCK':
@@ -93,8 +110,8 @@ const initializeMinima = () => {
               whenNewBlock(newBlockData);
               break;
           case 'MINING':
-              const minimgData = nodeEvent.data
-              whenMining(minimgData);
+              const miningData = nodeEvent.data
+              whenMining(miningData);
               break;
           case 'MAXIMA':
               const maximaData = nodeEvent.data
@@ -108,6 +125,10 @@ const initializeMinima = () => {
               const minimaLogeData = nodeEvent.data
               whenMinimaLog(minimaLogeData);
               break;
+          case 'MDS_TIMER_10SECONDS':
+            break;
+          case 'MAXIMAHOSTS':
+            break;
           default:
               console.error("Unknown event type: ", nodeEvent);
       }
@@ -115,7 +136,7 @@ const initializeMinima = () => {
 };
 
 // Do registration
-initializeMinima();
+// initializeMinima();
 
 ///////////////////////// application registers custom callbacks ///////////////////////
 
@@ -137,6 +158,8 @@ function onNewBalance(callback: (data: NewBalanceData) => void) {
 
 function onInit(callback: () => void) {
   whenInit = callback;
+
+  initializeMinima();
 }
 
 function onMinimaLog(callback: (data: MinimaLogData) => void) {

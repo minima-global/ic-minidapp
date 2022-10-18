@@ -91,8 +91,17 @@ interface NetworkPeer {
   connected: string;
 }
 
+interface CustomTokenJson {
+  name: string;
+  description: string;
+  url: string;
+  webvalidate: string;
+  ticker: string;
+}
+
 interface MinimaToken {
-  token: string & CustomTokenJson;
+  token: string & CustomTokenJson & NFT;
+  coins: string;
   tokenid: string;
   confirmed: string;
   unconfirmed: string;
@@ -100,11 +109,6 @@ interface MinimaToken {
   total: string;
 }
 
-interface CustomTokenJson {
-  name: string;
-  description: string;
-  icon: string;
-}
 
 interface Token {
   tokenid: string;
@@ -340,4 +344,21 @@ interface State {
   port: string;
   data: string;
   keeper: string;
+}
+
+// check for interface types
+export function isToken(obj: any): obj is CustomTokenJson {
+  return 'name' in obj && 'url' in obj && 'description' in obj;
+}
+
+export function isNFT(obj: any): obj is NFT {
+  return (
+      'name' in obj &&
+      'description' in obj &&
+      'external_url' in obj &&
+      'image' in obj &&
+      'owner' in obj &&
+      'nft' in obj &&
+      'webvalidate' in obj
+  );
 }

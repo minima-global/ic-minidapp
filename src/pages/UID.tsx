@@ -1,16 +1,16 @@
 import React from "react";
-import { Button, Link, Stack, TextField, Typography } from "@mui/material";
+import { Button, CircularProgress, Link, Stack, TextField, Typography } from "@mui/material";
 import { Link as LinkRouter } from "react-router-dom";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
 
-import { RewardsContext } from "../App";
-import { setIncentiveCash } from "../minima";
+import { getIncentiveCashID, setIncentiveCash } from "../minima";
+
 
 const UID = () => {
-  const [myRewards, setMyRewards] = React.useContext(RewardsContext);
-  // console.log("UID myrewards context", myRewards);
+  // const [myRewards, setMyRewards] = React.useContext(RewardsContext);
+
   return (
     <Stack spacing={2}>
       <Typography variant="h6">Incentive ID</Typography>
@@ -24,17 +24,7 @@ const UID = () => {
       <Typography variant="caption">
         Example: (0XXXXXb-5XXc-4XX7-aXXc-70XX8XX7cXX1)
       </Typography>
-      <UIDForm
-        set={
-          myRewards &&
-          myRewards.hasOwnProperty("details") &&
-          myRewards.details !== null
-            ? true
-            : false
-        }
-        setRewardsContext={setMyRewards}
-        myRewards={myRewards}
-      />
+      <UIDForm />
     </Stack>
   );
 };
@@ -45,15 +35,26 @@ const validation = Yup.object().shape({
   uid: Yup.string().required("Field Required"),
 });
 
-const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
+const UIDForm = ({ set }: any) => {
   const [formMessage, setFormMessage] = React.useState("");
+  const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
-    formik.setFieldValue(
-      "uid",
-      myRewards && myRewards.uid.length ? myRewards.uid : ""
-    );
-  }, [myRewards]);
+    
+    getIncentiveCashID().then((id) => {
+
+      formik.setFieldValue("uid", id);
+
+    }).catch((err) => {
+
+      console.error(err);
+
+    }).finally(() => {
+      
+      setTimeout(() => setLoading(false), 1000)
+    })
+
+  }, []);
 
   const formik = useFormik({
     initialValues: {
@@ -62,41 +63,26 @@ const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
     onSubmit: ({ uid }: { uid: string }) => {
       if (formMessage.length) setFormMessage("");
 
-      setIncentiveCash(uid)
-        .then((res: any) => {
-          // console.log("UID", uid);
-          // console.log(res);
-          if (res.status) {
-            if (
-              !res.response.hasOwnProperty("details") ||
-              (res.response.hasOwnProperty("details") &&
-                res.response.details === null)
-            ) {
-              console.error(
-                `You tried to register ${res.params.uid} and it failed, please use a valid uid!`
-              );
-              setFormMessage(
-                `You have entered an invalid Incentive ID, please go to the Incentive Website & copy it from the Incentive ID page.`
-              );
+      setIncentiveCash(uid).then(() => {
 
-              setTimeout(() => formik.resetForm(), 2000);
-            } else {
-              // console.log("Setting new rewards context...");
-              setRewardsContext(res.response);
-              setFormMessage(`You have successfully registered your node.`);
+        setFormMessage("You have successfully registered your node.");
 
-              setTimeout(() => formik.resetForm(), 2000);
+        formik.resetForm();
+        
+        formik.setFieldValue("uid", uid);
+        setLoading(false);
 
-              setTimeout(() => {
-                formik.setFieldValue("uid", uid);
-              }, 2100);
-            }
-          }
-        })
-        .catch((err) => {
-          console.error(err);
-          setTimeout(() => formik.resetForm(), 2000);
-        });
+      }).catch(err => {
+        
+        console.error(err);
+        setFormMessage(err)
+
+        
+        formik.resetForm();
+        setLoading(false);
+
+      });
+
     },
     validateOnChange: true,
     validationSchema: validation,
@@ -109,7 +95,7 @@ const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
           disabled={formik.isSubmitting}
           id="uid"
           name="uid"
-          placeholder={"Incentive ID"}
+          placeholder={loading ? "Please wait..." : "Incentive ID"}
           value={formik.values.uid}
           onChange={formik.handleChange}
           error={formik.touched.uid && Boolean(formik.errors.uid)}
@@ -129,12 +115,13 @@ const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
           }}
         />
         <Button
-          disabled={formik.isSubmitting && formik.dirty && formik.isValid}
+          disabled={loading || formik.isSubmitting && formik.dirty && formik.isValid}
           type="submit"
           variant="contained"
           disableElevation
         >
-          {formik.values.uid.length ? "Update" : "Enter"}
+          {formik.isSubmitting ? <CircularProgress size={24} color="inherit" /> : !formik.isSubmitting && formik.values.uid && formik.values.uid.length > 0 ? "Update" : "Enter"}
+          
         </Button>
         {formMessage.length ? (
           <Typography
@@ -148,6 +135,7 @@ const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
             {formMessage}
           </Typography>
         ) : null}
+       
         {formMessage.length &&
         formMessage === "You have successfully registered your node." ? (
           <LinkRouter className="rewards-link" to="/details">

@@ -129,6 +129,22 @@ var MDS = {
         callback
       );
     },
+
+    /**
+     * Make a POST request
+     */
+    POST: function (url, data, callback) {
+      //Create the sinlg eline version..
+      var postline = url + "&" + data;
+      // console.log(`postline`, postline);
+
+      //Send via POST
+      httpPostAsync(
+        MDS.mainhost + "netpost?" + "uid=" + MDS.minidappuid,
+        postline,
+        callback
+      );
+    },
   },
 
   /**
@@ -232,27 +248,27 @@ function httpPostAsync(theUrl, params, callback) {
  * @returns
  */
 /*function httpGetAsync(theUrl, callback)
- {	
-		 var xmlHttp = new XMLHttpRequest();
-		 xmlHttp.onreadystatechange = function() { 
-				 if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
-					 if(MDS.logging){
-				 console.log("RPC      : "+theUrl);
-				 console.log("RESPONSE : "+xmlHttp.responseText);
-			 }
- 
-			 //Always a JSON ..
-					 var rpcjson = JSON.parse(xmlHttp.responseText);
-					 
-					 //Send it to the callback function..
-					 if(callback){
-						 callback(rpcjson);
-					 }
-				 }
-		 }
-	 xmlHttp.open("GET", theUrl, true); // true for asynchronous 
-		 xmlHttp.send(null);
- }*/
+{	
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200){
+        	if(MDS.logging){
+				console.log("RPC      : "+theUrl);
+				console.log("RESPONSE : "+xmlHttp.responseText);
+			}
+
+			//Always a JSON ..
+        	var rpcjson = JSON.parse(xmlHttp.responseText);
+        	
+        	//Send it to the callback function..
+        	if(callback){
+        		callback(rpcjson);
+        	}
+        }
+    }
+	xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send(null);
+}*/
 
 function httpPostAsyncPoll(theUrl, params, callback) {
   //Do we log it..

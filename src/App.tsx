@@ -17,10 +17,28 @@ import UID from "./pages/UID";
 import Help from "./pages/Help";
 import InviteLink from "./pages/InviteLink";
 import UserDetails from "./pages/UserDetails";
-import { setIncentiveCash } from "./minima";
+import { events } from "./minima";
 
 import MenuIcon from "@mui/icons-material/Menu";
 import SubmitAddress from "./pages/SubmitAddress";
+
+interface Rewards {
+  communityRewards: number;
+  dailyRewards: number;
+  inviterRewards: number;
+  previousRewards: number;
+}
+interface Wallet {
+  nodeAddress: string;
+  publicKey: string;
+}
+export interface INodeIncentiveDetails {
+  uid: string;
+  inviteCode?: string;
+  lastPing?: string;
+  rewards?: Rewards;
+  wallet?: Wallet;
+}
 
 export const RewardsContext = React.createContext<any>({
   uid: "",
@@ -29,6 +47,10 @@ export const RewardsContext = React.createContext<any>({
 const Header = ({ setOpenDrawer }: any) => {
   const location = useLocation();
   const [openMenu, setOpenMenu] = React.useState(false);
+  
+  React.useEffect(() => {
+    events.onInit(() => console.log('Minima inited'))
+  }, [])
   const routerDrawer = [
     {
       pathname: "/about",
@@ -119,33 +141,12 @@ const Navigation = () => {
 };
 
 function App() {
-  const [myRewards, setMyRewards] = React.useState({ uid: "" });
   const [openDrawer, setOpenDrawer] = React.useState(false);
   const handleDrawerClose = () => {
     return openDrawer ? setOpenDrawer(false) : null;
   };
-  React.useEffect(() => {
-    // set context if exist
-    setIncentiveCash("")
-      .then((res: any) => {
-        // console.log(res);
-        if (res.status) {
-          if (
-            res.response.uid &&
-            res.response.uid.length &&
-            res.response.hasOwnProperty("details")
-          ) {
-            setMyRewards(res.response);
-          }
-        }
-      })
-      .catch((err) => {
-        console.error(err);
-      });
-  }, []);
 
   return (
-    <RewardsContext.Provider value={[myRewards, setMyRewards]}>
       <div className="App">
         <Header
           setOpenDrawer={setOpenDrawer}
@@ -164,7 +165,6 @@ function App() {
           <DrawerContent />
         </Drawer>
       </div>
-    </RewardsContext.Provider>
   );
 }
 

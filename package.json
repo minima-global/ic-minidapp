@@ -1,8 +1,17 @@
 {
   "name": "incentivecash",
-  "version": "1.5",
+  "version": "1.8",
   "private": true,
   "homepage": ".",
+  "scripts": {
+    "start": "env-cmd -f .env.development react-scripts start",
+    "build": "env-cmd -f .env.production react-scripts build",
+    "build:staging": "env-cmd -f .env.development react-scripts build",
+    "build-zip": "npm run build && rm minidapp/ic_* && cd build && zip -r ic_$npm_package_version.mds.zip . && mv ic_$npm_package_version.mds.zip ../minidapp",
+    "build-zip:staging": "npm run build:staging && rm minidapp/ic_* && cd build && zip -r ic_$npm_package_version.mds.zip . && mv ic_$npm_package_version.mds.zip ../minidapp",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
@@ -26,15 +35,6 @@
     "typescript": "^4.7.4",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"
-  },
-  "scripts": {
-    "start": "env-cmd -f .env.development react-scripts start",
-    "build": "env-cmd -f .env.production react-scripts build",
-    "build:staging": "env-cmd -f .env.development react-scripts build",
-    "build-zip": "npm run build && rm minidapp/ic_* && cd build && zip -r ic_$npm_package_version.mds.zip . && mv ic_$npm_package_version.mds.zip ../minidapp",
-    "build-zip:staging": "npm run build:staging && rm minidapp/ic_* && cd build && zip -r ic_$npm_package_version.mds.zip . && mv ic_$npm_package_version.mds.zip ../minidapp",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": [
