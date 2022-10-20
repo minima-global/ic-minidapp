@@ -1,4 +1,5 @@
 import { INodeIncentiveDetails } from './../App';
+import { IScript } from './types/minima';
 const setIncentiveCash = (uid: string) => {
     return new Promise((resolve, reject) => {
         req(`incentivecash uid:${uid}`).then((details: any) => {
@@ -89,7 +90,38 @@ const getAddress = () => {
     })
 }
 
-const req = (command: string) => {   
+/** is Address mine check */
+
+const isAddressMine = (addr: string) => {
+
+    return new Promise((resolve, reject) => {
+
+        req(`scripts`).then((scripts) => {
+            let scriptAddress = undefined;
+            scripts.forEach((s: IScript) => {
+                if (s.script === addr) {
+                    scriptAddress = s.address;
+                }
+            })
+
+            if (scriptAddress) {
+                resolve(scriptAddress);
+            }
+            
+            throw new Error("Address not found, this address doesn't belong to you.");
+    
+        }).catch((err) => {
+            
+            reject(err);
+    
+        })
+
+
+    })
+
+}
+
+const req = (command: string): Promise<any> => {   
     return new Promise((resolve, reject) => {
         MDS.cmd(command, (resp: any) => {
 
@@ -136,5 +168,6 @@ export {
     getAddress,
     getNodeDetailsNoCache,
     getIncentiveCashDetails,
-    getIncentiveCashID
+    getIncentiveCashID,
+    isAddressMine
 }

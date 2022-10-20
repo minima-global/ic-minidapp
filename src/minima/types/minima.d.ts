@@ -214,6 +214,17 @@ interface Script {
   proof: Proof;
 }
 
+
+interface IScript {
+  script: string;
+  address: string;
+  miniaddress: string;
+  simple: boolean;
+  default: boolean;
+  publickey: string;
+  track: boolean;
+}
+
 interface Proof {
   data: string;
   hashbits: number;

@@ -6,11 +6,12 @@ import { INodeIncentiveDetails, RewardsContext } from "../App";
 import CustomListItem from "../components/CustomListItem";
 
 import moment from "moment";
-import { getIncentiveCashDetails, getNodeDetailsNoCache } from "../minima";
+import { getIncentiveCashDetails, getNodeDetailsNoCache, isAddressMine } from "../minima";
 
 const UserDetails = () => {
   const [myRewards, setMyRewards] = React.useState<any>();
   const [spinner, setSpinner] = React.useState(true);
+  const [relevantAddress, setRelevantAddress] = React.useState(false);
 
   React.useEffect(() => {
     // set context if exist
@@ -22,13 +23,33 @@ const UserDetails = () => {
         getNodeDetailsNoCache().then((details: INodeIncentiveDetails | string) => {
           if (typeof details === 'string') throw new Error(details)
 
-          const userDetailsObject = {
+          const userDetailsObject: INodeIncentiveDetails = {
             uid: dt.uid,
             inviteCode: details.inviteCode ? details.inviteCode : "",
             lastPing: details.lastPing ? details.lastPing : "",
-            rewards: details.rewards ? details.rewards : {},
-            wallet: details.wallet ? details.wallet : {}
+            rewards: details.rewards ? details.rewards : undefined,
+            wallet: details.wallet ? details.wallet : undefined
           }
+
+          if (userDetailsObject.wallet !== undefined) {
+
+            isAddressMine(userDetailsObject.wallet.nodeAddress).then(() => {
+              // this addr is one of ours
+              setRelevantAddress(true)
+
+
+            }).catch((err) => {
+              // this address is not one of ours
+              console.error(err)
+
+            })
+ 
+          } else {
+
+            console.error("No wallet found for this user");
+
+          }
+
 
           setMyRewards(userDetailsObject);
           setSpinner(false);
@@ -43,6 +64,8 @@ const UserDetails = () => {
         setSpinner(false);
         setMyRewards({uid: ""})
       });
+
+
   }, []);
 
   const calculateTotalRewards = (rs: number[]) => {
@@ -105,6 +128,14 @@ const UserDetails = () => {
                 : "Not set"
             }
           />
+          {relevantAddress ? 
+          
+          <Typography variant="caption">Wallet relevant to your node ✅ </Typography> 
+          
+          : 
+          
+          <Typography variant="caption">Wallet does not belong to your node ❎ </Typography>
+          }
           {!myRewards.wallet?.publicKey ||
           !myRewards.wallet?.nodeAddress ? (
             <LinkRouter className="rewards-link" to="/submitaddress">
