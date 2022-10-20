@@ -99,7 +99,7 @@ const isAddressMine = (addr: string) => {
         req(`scripts`).then((scripts) => {
             let scriptAddress = undefined;
             scripts.forEach((s: IScript) => {
-                if (s.script === addr) {
+                if (s.address === addr) {
                     scriptAddress = s.address;
                 }
             })
