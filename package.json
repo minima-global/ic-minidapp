@@ -15,6 +15,7 @@
     "@types/node": "^16.11.43",
     "@types/react": "^18.0.15",
     "@types/react-dom": "^18.0.6",
+    "axios": "^1.1.3",
     "formik": "^2.2.9",
     "moment": "^2.29.4",
     "react": "^18.2.0",
@@ -32,7 +33,9 @@
     "build": "react-scripts build",
     "build-zip": "npm run build && rm minidapp/ic_* && cd build && zip -r ic_$npm_package_version.mds.zip . && mv ic_$npm_package_version.mds.zip ../minidapp",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "install": "npm run build-zip && npm run bootstrap",
+    "e2e": "cd e2e && jest --runInBand"
   },
   "eslintConfig": {
     "extends": [

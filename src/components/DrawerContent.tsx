@@ -23,6 +23,14 @@ import ConnectWithoutContactIcon from "@mui/icons-material/ConnectWithoutContact
 
 import { ReactComponent as LandscapeLogo } from "../assets/minima-landscape-logo.svg";
 
+const dataTestIds = {
+  uidLink: 'DrawerContent__uidLink',
+  helpLink: 'DrawerContent__helpLink',
+  inviteLink: 'DrawerContent__inviteLink',
+  detailsLink: 'DrawerContent__detailsLink',
+  incentiveSiteLink: 'DrawerContent__incentiveSiteLink',
+}
+
 const DrawerContent = ({ handleDrawerClose }: any) => {
   return (
     <>
@@ -45,7 +53,7 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
         direction="column"
       >
         <List sx={{ ml: 0.5, mr: 0.5 }}>
-          <NavLink onClick={handleDrawerClose} className="nav-links" to="/uid">
+          <NavLink data-testid={dataTestIds.uidLink} onClick={handleDrawerClose} className="nav-links" to="/uid">
             <ListItemButton>
               <ListItemIcon>
                 <AppRegistrationIcon color="primary" />
@@ -59,6 +67,7 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
             </ListItemButton>
           </NavLink>
           <NavLink
+            data-testid={dataTestIds.detailsLink}
             onClick={handleDrawerClose}
             className="nav-links"
             to="/details"
@@ -76,6 +85,7 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
             </ListItemButton>
           </NavLink>
           <NavLink
+            data-testid={dataTestIds.inviteLink}
             onClick={handleDrawerClose}
             className="nav-links"
             to="/invitelink"
@@ -92,7 +102,7 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
               </Typography>
             </ListItemButton>
           </NavLink>
-          <NavLink onClick={handleDrawerClose} className="nav-links" to="/help">
+          <NavLink data-testid={dataTestIds.helpLink} onClick={handleDrawerClose} className="nav-links" to="/help">
             <ListItemButton>
               <ListItemIcon>
                 <InfoIcon color="primary" />
@@ -108,6 +118,7 @@ const DrawerContent = ({ handleDrawerClose }: any) => {
 
           <Divider />
           <Link
+            data-testid={dataTestIds.incentiveSiteLink}
             onClick={handleDrawerClose}
             className="nav-links-website"
             target="_"

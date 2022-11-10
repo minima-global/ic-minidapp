@@ -16,7 +16,7 @@ import DrawerContent from "./components/DrawerContent";
 import UID from "./pages/UID";
 import Help from "./pages/Help";
 import InviteLink from "./pages/InviteLink";
-import UserDetails from "./pages/UserDetails";
+import UserDetails from "./pages/Rewards";
 import { setIncentiveCash } from "./minima";
 
 import MenuIcon from "@mui/icons-material/Menu";

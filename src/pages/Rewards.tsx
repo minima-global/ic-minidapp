@@ -6,7 +6,12 @@ import CustomListItem from "../components/CustomListItem";
 
 import moment from "moment";
 
-const UserDetails = () => {
+const dataTestIds = {
+  rewardDetails: 'InviteLink__rewardDetails',
+  rewardDetailsNotAvailable: 'InviteLink__rewardDetailsNotAvailable',
+}
+
+const Rewards = () => {
   const [myRewards, setmyRewards] = React.useContext(RewardsContext);
   // console.log("myRewards", myRewards);
 
@@ -22,7 +27,7 @@ const UserDetails = () => {
       myRewards.uid.length &&
       myRewards.hasOwnProperty("details") &&
       myRewards.details !== null ? (
-        <List sx={{ margin: "0!important" }}>
+        <List sx={{ margin: "0!important" }} data-testid={dataTestIds.rewardDetails}>
           <CustomListItem
             title="Total Rewards"
             value={calculateTotalRewards([
@@ -57,7 +62,7 @@ const UserDetails = () => {
           />
         </List>
       ) : (
-        <Typography variant="body2">
+        <Typography variant="body2" data-testid={dataTestIds.rewardDetailsNotAvailable}>
           Please connect your Incentive ID to view your Rewards.
         </Typography>
       )}
@@ -65,4 +70,4 @@ const UserDetails = () => {
   );
 };
 
-export default UserDetails;
+export default Rewards;

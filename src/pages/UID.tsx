@@ -45,6 +45,12 @@ const validation = Yup.object().shape({
   uid: Yup.string().required("Field Required"),
 });
 
+const dataTestIds = {
+  inputUid: 'UIDForm__inputUid',
+  btnSubmit: 'UIDForm__btnSubmit',
+  response: 'UIDForm__responseMessage',
+};
+
 const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
   const [formMessage, setFormMessage] = React.useState("");
 
@@ -111,6 +117,7 @@ const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
           name="uid"
           placeholder={"Incentive ID"}
           value={formik.values.uid}
+          data-testid={dataTestIds.inputUid}
           onChange={formik.handleChange}
           error={formik.touched.uid && Boolean(formik.errors.uid)}
           helperText={formik.touched.uid && formik.errors.uid}
@@ -129,6 +136,7 @@ const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
           }}
         />
         <Button
+          data-testid={dataTestIds.btnSubmit}
           disabled={formik.isSubmitting && formik.dirty && formik.isValid}
           type="submit"
           variant="contained"
@@ -139,6 +147,7 @@ const UIDForm = ({ set, setRewardsContext, myRewards }: any) => {
         {formMessage.length ? (
           <Typography
             variant="caption"
+            data-testid={dataTestIds.response}
             className={
               formMessage === "You have successfully registered your node."
                 ? ""

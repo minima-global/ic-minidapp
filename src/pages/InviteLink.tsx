@@ -2,12 +2,18 @@ import React from "react";
 import { RewardsContext } from "../App";
 import { Button, Stack, Typography } from "@mui/material";
 import CustomListItem from "../components/CustomListItem";
-
 import { copy } from "../shared/index";
+
+const dataTestIds = {
+  availableLink: 'InviteLink__availableLink',
+  unavailableLink: 'InviteLink__unavailableLink',
+};
 
 const InviteLink = () => {
   const [copyText, setCopyText] = React.useState("Copy");
-  const [myRewards, setMyRewards] = React.useContext(RewardsContext);
+  const [myRewards] = React.useContext(RewardsContext);
+  const hasLinkedIncentiveId = myRewards.details?.inviteCode;
+
   return (
     <Stack spacing={2}>
       <Typography variant="h6">Invite Link</Typography>
@@ -51,6 +57,7 @@ const InviteLink = () => {
       >
         {copyText}
       </Button>
+      <span data-testid={hasLinkedIncentiveId ? dataTestIds.availableLink : dataTestIds.unavailableLink} />
     </Stack>
   );
 };
