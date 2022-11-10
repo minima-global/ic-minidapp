@@ -27,6 +27,7 @@
     "yup": "^0.32.11"
   },
   "scripts": {
+    "bootstrap": "node --insecure-http-parser ./bootstrap.js",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "build-zip": "npm run build && rm minidapp/ic_* && cd build && zip -r ic_$npm_package_version.mds.zip . && mv ic_$npm_package_version.mds.zip ../minidapp",
@@ -50,5 +51,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "jest-puppeteer": "^6.1.1"
   }
 }
