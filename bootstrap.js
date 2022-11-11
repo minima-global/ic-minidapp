@@ -3,25 +3,30 @@ const fs = require('fs');
 const https = require('https');
 const jsdom = require('jsdom');
 const path = require('path');
+const config = require('./e2e.config.json');
 
 const httpsAgent = new https.Agent({ rejectUnauthorized: false });
 
 let appName = '';
 let tries = 0;
 let command = '';
-const dirname = __dirname;
 
 function getAppName() {
   const app = fs.readFileSync(__dirname + '/public/dapp.conf', 'utf-8');
   return JSON.parse(app).name;
 }
 
-async function checkMinimaHasLoaded(port){
+async function checkMinimaHasLoaded(port, additionalNode){
   try {
     const balance = await axios.get(`http://localhost:${port}/balance`);
-    const minimaHasLoaded = balance.data.response.find(token => token.tokenid === '0x00' && token.sendable !== '0');
-    return minimaHasLoaded;
+
+    if (!config.testOnGenesis || additionalNode) {
+      return balance.data.response.find(token => token.tokenid === '0x00');
+    }
+
+    return balance.data.response.find(token => token.tokenid === '0x00' && token.sendable !== '0');
   } catch {
+    console.log(`Are you sure Minima is running on port: ${port}`);
     return false;
   }
 }
@@ -88,10 +93,10 @@ async function rpc(port, command) {
   });
 }
 
-const checkIfMinimaHasLoaded = async (port) => {
+const checkIfMinimaHasLoaded = async (port, additionalNode = false) => {
   return new Promise((resolve) => {
     const check = () => {
-      checkMinimaHasLoaded(port).then(function (hasLoaded) {
+      checkMinimaHasLoaded(port, additionalNode).then(function (hasLoaded) {
         if (tries > 20) {
           clearInterval(interval);
           console.log('Minima checks has timed out');
@@ -115,6 +120,10 @@ const checkIfMinimaHasLoaded = async (port) => {
 };
 
 const getMostRecentFile = (dir) => {
+  if (!fs.existsSync(dir)) {
+    return null;
+  }
+
   const files = orderRecentFiles(dir);
   return files.length ? files[0] : undefined;
 };
@@ -123,30 +132,30 @@ const orderRecentFiles = (dir) => {
   return fs.readdirSync(dir)
     .filter((file) => file !== '.DS_Store')
     .filter((file) => fs.lstatSync(path.join(dir, file)).isFile())
-    .map((file) => ({ file, mtime: fs.lstatSync(path.join(dir, file)).mtime }))
+    .map((file) => ({ file, mtime: fs.lstatSync(path.join(dir, file)).mtime, fullPath: `${dir}/${file}` }))
     .sort((a, b) => b.mtime.getTime() - a.mtime.getTime());
 };
 
-const bootstrap = async (rpcPort) => {
+const bootstrap = async (rpcPort, splitCoins = false) => {
+  appName = await getAppName();
   const mdsPort = rpcPort - 2;
-  const isAppInstalled = false;
-  const { file } = getMostRecentFile(__dirname + '/minidapp');
-  await removePreviousApps(rpcPort);
+  const recentFile = getMostRecentFile(__dirname + (config.pathToMiniDAppBuildFolder || '/minidapp'));
 
-  if (!isAppInstalled) {
+  if (recentFile) {
     if (process.env.CI) {
-      command = `mds action:install file:/workspace/minidapp/${file} trust:write`;
+      command = `mds action:install file:/workspace/minidapp/${recentFile.file} trust:write`;
     } else {
-      command = `mds action:install file:${dirname}/minidapp/${file} trust:write`;
+      await removePreviousApps(rpcPort);
+      command = `mds action:install file:${recentFile.fullPath} trust:write`;
     }
 
     await rpc(rpcPort, command);
   }
 
   // split coins, will make tests run faster
-  if (rpcPort === 9005) {
+  if (splitCoins) {
     const address = await rpc(rpcPort, 'getaddress');
-    await rpc(rpcPort, `send amount:100 address:${address.response.miniaddress} tokenid:0x00 split:4`);
+    await rpc(rpcPort, `send amount:10 address:${address.response.miniaddress} tokenid:0x00 split:4`);
   }
 
   const appUid = await getAppUid(rpcPort);
@@ -167,12 +176,14 @@ const bootstrap = async (rpcPort) => {
   appName = getAppName();
 
   await Promise.all([
-    checkIfMinimaHasLoaded(9005),
-  ]);
+    checkIfMinimaHasLoaded(config.clientOnePort || 9005),
+    config.enabledSecondClient ? checkIfMinimaHasLoaded(config.clientTwoPort || 8005, true) : false,
+  ].filter(Boolean));
 
   const response = await Promise.all([
-    bootstrap(9005),
-  ]);
+    bootstrap(9005, true),
+    config.enabledSecondClient ? bootstrap(config.clientTwoPort || 8005, false) : false,
+  ].filter(Boolean));
 
   const session = {
     MINIDAPP_UID: response[0].miniDAppUid,
@@ -180,7 +191,13 @@ const bootstrap = async (rpcPort) => {
     MINIMA_RPC_URL: response[0].rpcUrl,
   };
 
-  console.log(session.MINIDAPP_APP_URL);
+  if (config.enabledSecondClient) {
+    session['SECOND_MINIDAPP_UID'] = response[1].miniDAppUid;
+    session['SECOND_MINIDAPP_APP_URL'] = response[1].miniDAppUrl;
+    session['SECOND_MINIMA_RPC_URL'] = response[1].rpcUrl;
+  }
+
+  console.log(session);
 
   fs.writeFileSync('./session.json', JSON.stringify(session, null, 2));
 
