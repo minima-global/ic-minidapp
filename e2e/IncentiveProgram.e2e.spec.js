@@ -5,9 +5,9 @@ const axios = require("axios");
 
 describe('Incentive Program - End to End', () => {
   beforeEach(async () => {
+    await axios.get(session.MINIMA_RPC_URL + '/incentivecash uid:""');
     await page.goto(session.MINIDAPP_APP_URL);
     await page.bringToFront();
-    await axios.get(session.MINIMA_RPC_URL + '/incentivecash uid:""');
   });
 
   it('should be titled "Incentive Program"', async () => {
@@ -52,21 +52,22 @@ describe('Incentive Program - End to End', () => {
     await page.type(helpers.getByTestId('UIDForm__inputUid', { input: true }), String(process.env.E2E_INCENTIVE_CASH_UID));
     await page.click(helpers.getByTestId('UIDForm__btnSubmit'));
     await page.waitForSelector(helpers.getByTestId('UIDForm__responseMessage'));
-    await page.click(helpers.getByTestId('DrawerContent__detailsLink'));
-
     await page.click(helpers.getByTestId('DrawerContent__inviteLink'));
+
     await expect(page.$(helpers.getByTestId('InviteLink__availableLink'))).resolves.toBeTruthy();
     await page.screenshot({ path: '../screenshots/invite_link_available.png' });
   });
 
   it('displays the connect my incentive id if on the view rewards page', async () => {
     await page.click(helpers.getByTestId('DrawerContent__detailsLink'));
+
     await expect(page.$(helpers.getByTestId('InviteLink__rewardDetailsNotAvailable'))).resolves.toBeTruthy();
     await page.screenshot({ path: '../screenshots/rewards_not_available.png' });
   });
 
   it('displays the connect my incentive id to view my invite link', async () => {
     await page.click(helpers.getByTestId('DrawerContent__inviteLink'));
+
     await expect(page.$(helpers.getByTestId('InviteLink__unavailableLink'))).resolves.toBeTruthy();
     await page.screenshot({ path: '../screenshots/invite_link_not_available.png' });
   });
